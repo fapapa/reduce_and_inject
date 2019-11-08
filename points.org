@@ -1,0 +1,5 @@
+* Strange syntax
+* When to use it
+* Why use it
+** Increasing abstraction
+** More functional code
