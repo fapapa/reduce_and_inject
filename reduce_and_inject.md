@@ -3,12 +3,12 @@
 `Reduce`, `inject`, `fold`, `accumulate`, `aggregate` and `compress`. All
 different names for the same [*higher-order* function][Wikipedia Reduce] that
 iterates over an array, returning a single value. This isn't an article about
-**how** to use this nugget; Instead I want to convince you of **when** and
+**how** to use this nugget; Instead, I want to convince you of **when** and
 **why** you **should** use it.
 
 ## What's that smell?
 
-There are plenty of great articles, videos and documentation on how to use this
+There are plenty of great articles, videos, and documentation on how to use this
 function in your language of choice, so I won't go over that here. But I do want
 to touch on the *anti-pattern* or *code-smell* that should make you consider
 using reduce and its brethren. Consider the following Ruby code:
@@ -82,8 +82,8 @@ puts adder(my_numbers).inspect
 
 I've removed the parameter to the `#adder` method, and am instead calling
 `inject` directly on the `my_numbers` array, which is defined outside the
-method. The code is the same number of lines as before, and is just as
-readable. However it is more difficult to maintain and more prone to bugs. If I
+method. The code is the same number of lines as before and is just as
+readable. However, it is more difficult to maintain and more prone to bugs. If I
 move `#adder`, I also have to move `my_numbers` with it. I also can't re-use
 `#adder` on another array. And `my_numbers` can end up being changed by another
 method, in a way we don't expect, leading to all sorts of difficult-to-squash
@@ -101,11 +101,11 @@ hard-to-squash bug.
 
 ## Levels of abstraction
 
-Computers are incredibly complex marvels of human achievement. At their core
+Computers are incredibly complex marvels of human achievement. At their core,
 they are a huge collection of precisely interconnected, electronically
 controlled switches that do our bidding. For all their complexity, we interact
-with them using touches, swipes, clicks, and keypresses, etc., that feel like an
-extension of our own bodies and minds. The concept that allows us to bridge the
+with them using touches, swipes, clicks, and key presses, etc., that feel like
+an extension of our bodies and minds. The concept that allows us to bridge the
 gap between their complexity and their ease-of-use is *abstraction*.
 
 The processor of a computer generally only has one way to conditionally execute
@@ -119,7 +119,7 @@ result with zero and jumping to a different instruction based on that
 comparison. If you've ever tried to understand (or worse, write) a program in
 assembly, you know it is a tedious task.
 
-Depending on the architechture and language, you might have a virtual machine
+Depending on the architecture and language, you might have a virtual machine
 language that builds on top of assembly and offers luxuries like `goto`,
 `if-then` and `while` statements that wrap up the complicated assembly
 instructions in a shorter, easier-to-read format. The computer still ends up
@@ -129,7 +129,7 @@ you. That's abstraction.
 Modern programming languages (which often compile into VM languages) offer
 `if-then` and `while` statements too. They also often provide higher-level
 constructs like `for` loops. At some point, somebody noticed a pattern of
-`while` loops often being used to step through a range of values, and created
+`while` loops often being used to step through a range of values and created
 the `for` loop to do just that. This new *abstraction* meant you didn't have to
 create a throw-away variable outside of the loop and remember to increment it at
 the end of the loop.
@@ -207,16 +207,16 @@ build on the abstraction provided by `inject`/`reduce`.
 
 `reduce` and its cousins have become wildly popular over the past few years with
 the popularity of functional programming. Entire libraries have been written
-around the pattern ([Redux](https://redux.js.org)). And even popular frameorks
+around the pattern ([Redux](https://redux.js.org)). And even popular frameworks
 like [React](https://reactjs.org) have been re-worked to take advantage of the
 pattern (`useReducer`).
 
-As developers we need to be careful not to buy in to the latest programming fad
+As developers, we need to be careful not to buy into the latest programming fad
 just because all the cool devs are doing it. The cost of being a good dev is
 eternal vigilance. When we see something gaining in popularity, we need to do
 our homework to figure out what this "new something" aims to solve. Instead of
 just using the new tool blindly, we should understand the *when* and
-*why*. Hopefully this article has helped you understand the *when* and *why* of
+*why*. Hopefully, this article has helped you understand the *when* and *why* of
 `reduce` and its kin.
 
 [Wikipedia Reduce]: https://en.wikipedia.org/wiki/Fold_(higher-order_function)
