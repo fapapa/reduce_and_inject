@@ -33,7 +33,8 @@ puts adder(my_numbers).inspect
 
 The fact that we are creating a variable with an initial value, and doing
 something with it as we iterate over an array, should make us think about
-whether `inject` would be better. Here's what that code would look like after
+whether `inject` would be better. It's a smell that should make us think,
+"something may be wrong here." Here's what that code would look like after
 refactoring it to use `inject`:
 
 ```ruby
@@ -49,11 +50,15 @@ puts adder(my_numbers).inspect
 ```
 
 You'll immediately notice that this is a lot shorter. That is **not** a good
-enough reason on its own to use `inject`. What we want is *more readable* code,
-not just shorter code. Shorter code is generally more readable, but we are
-adding some *cruft* to the code that adds to your cognitive load as you try to
-understand what the code is doing. It is not immediately clear what the
-argument to inject does, for example.
+enough reason on its own to use `inject`.
+
+![I replaced all my loops with reduce](./weird_flex.jpg)
+Weird flex, but OK.
+
+What we want is *more readable* code, not just shorter code. Shorter code is
+generally more readable, but we are adding some *cruft* to the code that adds to
+the reader's cognitive load as they try to understand what the code is doing. It
+is not immediately clear what the argument to inject does, for example.
 
 ## Functional programming
 
@@ -74,47 +79,44 @@ end
 puts adder(my_numbers).inspect
 ```
 
-I've removed the parameter to the adder method, and am instead calling `inject`
-directly on the `my_numbers` array, which is defined outside the method. The
-code is the same number of lines as before, and is just as readable. However it
-is more difficult to maintain and more prone to bugs. If I move `#adder`, I also
-have to move `my_numbers` with it. I also can't re-use adder on another
-array. And `my_numbers` can end up being changed by another method, in a way we
-don't expect, leading to all sorts of difficult-to-squash bugs. I say all this
-to drive home the point that neither shorter code nor more readable code is the
-goal; *maintainable*, error-free code is the goal.
+I've removed the parameter to the `#adder` method, and am instead calling
+`inject` directly on the `my_numbers` array, which is defined outside the
+method. The code is the same number of lines as before, and is just as
+readable. However it is more difficult to maintain and more prone to bugs. If I
+move `#adder`, I also have to move `my_numbers` with it. I also can't re-use
+adder on another array. And `my_numbers` can end up being changed by another
+method, in a way we don't expect, leading to all sorts of difficult-to-squash
+bugs. I say all this to drive home the point that neither shorter code nor more
+readable code is the goal; *maintainable*, `error-free` code is the
+goal. Shorter, more elegant code is a tool to help us get there.
 
 How does the `inject` method help us to write maintainable, error-free code? It
 uses functional programming techniques like not mutating state and dependency
 injection. In the original `adder` method, notice the `sum` variable we
-created. Imagine that, as we add features, we need to add to this method; we
+created. Imagine that, as we add features, we need to add to this method. We
 could conceivably end up changing `sum`, only under certain conditions, before
-it is used by the `#each` block. That has a potential to arise as a hard-to-find
-bug.
-
-Whereas in the `#each` example we are mutating `sum` on every iteration of
-the array, in the `#inject` example we are re-creating `sum` in each iteration
-with the return value of the previous iteration.
+it is used by the `#each` block. That has a potential to arise as a
+hard-to-squash bug.
 
 ## Levels of abstraction
 
 Computers are incredibly complex marvels of human achievement. At their core
 they are a huge collection of precisely interconnected, electronically
 controlled switches that do our bidding. For all their complexity, we interact
-with them using touches, swipes, clicks, and keypresses, etc. The concept that
-allows us to bridge the gap between their complexity and their eas-of-use is
-abstraction.
+with them using touches, swipes, clicks, and keypresses, etc., that feel like an
+extension of our own bodies and minds. The concept that allows us to bridge the
+gap between their complexity and their eas-of-use is abstraction.
 
 The processor of a computer generally only has one way to conditionally execute
-instructions. For our purposes, you send the processor an instruction which will
-output a result. As part of the instruction, you tell it under which conditions
-you want it to jump (if the result is > 0, < 0, == 0, or any combination), and
-to which instruction it should jump. This is the basis for all `if`s, loops, and
-iterations. There is no conditional logic or looping that cannot be implemented
-with this primitive construct of comparing a result with zero and jumping to a
-different instruction based on that comparison. If you've ever tried to
-understand (or worse, write) a program written in assembly, you know this is not
-ideal.
+instructions. You can think of it this way: you send the processor an
+instruction which will output a result. As part of the instruction, you tell it
+under which conditions you want it to jump (if the result is > 0, < 0, == 0, or
+any combination), and to which instruction in the code it should jump. This is
+the basis for all `if`s, loops, and iterations. There is no conditional logic or
+looping that cannot be implemented with this primitive construct of comparing a
+result with zero and jumping to a different instruction based on that
+comparison. If you've ever tried to understand (or worse, write) a program in
+assembly, you know it is a tedious task.
 
 Depending on the architechture and language, you might have a virtual machine
 language that builds on top of assembly and offers luxuries like `goto`,
@@ -128,6 +130,8 @@ Modern programming languages (which often compile into VM languages) offer
 constructs like `for` loops. At some point, somebody noticed a pattern of
 `while` loops often being used to step through a range of values, and created
 the `for` loop to do just that. This new *abstraction* meant you didn't have to
+create a throw-away variable outside of the loop and remember to increment it at
+the end of the loop.
 
 ```javascript
 // Traditional while loop
@@ -146,7 +150,7 @@ for (let i = 0; i <= 10; i++) {
 
 Again, this isn't just shorter and easier to read; it's more maintainable and
 portable, and less error-prone. It's not a subjective style issue; the `for`
-loop is objectively better code.
+loop is objectively better code for that situation.
 
 You've no doubt noticed that you most often use for loops to iterate over an array:
 
@@ -167,7 +171,23 @@ const forEach = (arr, cb) => {
     cb(arr[i]);
   }
 };
+
+my_array = [/** some items in here **/]
+
+forEach(my_array, (item) => {
+  // do something with *item*
+}
 ```
+
+Now we can cleanly express that we want a chunk of code to run on every element
+of an array. It's impossible to introduce bugs on any of the iteration logic
+because it's wrapped up in a forEach and hidden from us. (The `forEach` here is
+written to act on an array that is passed into it. The real `forEach` provided
+by Javascript is a method on the instance variable.)
+
+There's something new going on here. We are passing a function as an argument to
+another function. Not all programming languages can do this and it is a strict
+requirement for the *functional programming* paradigm.
 
 
 
