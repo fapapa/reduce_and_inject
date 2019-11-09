@@ -3,8 +3,8 @@
 `Reduce`, `inject`, `fold`, `accumulate`, `aggregate` and `compress`. All
 different names for the same [*higher-order* function][Wikipedia Reduce] that
 iterates over an array, returning a single value. This isn't an article about
-**how** to use this nugget; Instead I want to convince you that you **should**
-use it.
+**how** to use this nugget; Instead I want to convince you of **when** and
+**why** you **should** use it.
 
 ## What's that smell?
 
@@ -85,10 +85,10 @@ I've removed the parameter to the `#adder` method, and am instead calling
 method. The code is the same number of lines as before, and is just as
 readable. However it is more difficult to maintain and more prone to bugs. If I
 move `#adder`, I also have to move `my_numbers` with it. I also can't re-use
-adder on another array. And `my_numbers` can end up being changed by another
+`#adder` on another array. And `my_numbers` can end up being changed by another
 method, in a way we don't expect, leading to all sorts of difficult-to-squash
 bugs. I say all this to drive home the point that neither shorter code nor more
-readable code is the goal; *maintainable*, `error-free` code is the
+readable code is the goal; *maintainable*, *error-free* code is the
 goal. Shorter, more elegant code is a tool to help us get there.
 
 How does the `inject` method help us to write maintainable, error-free code? It
@@ -106,7 +106,7 @@ they are a huge collection of precisely interconnected, electronically
 controlled switches that do our bidding. For all their complexity, we interact
 with them using touches, swipes, clicks, and keypresses, etc., that feel like an
 extension of our own bodies and minds. The concept that allows us to bridge the
-gap between their complexity and their eas-of-use is abstraction.
+gap between their complexity and their ease-of-use is *abstraction*.
 
 The processor of a computer generally only has one way to conditionally execute
 instructions. You can think of it this way: you send the processor an
@@ -187,7 +187,7 @@ Now we can cleanly express that we want a chunk of code to run on every element
 of an array. It's impossible to introduce bugs on any of the iteration logic
 because it's wrapped up in a forEach and hidden from us. (The `forEach` here is
 written to act on an array that is passed into it. The real `forEach` provided
-by Javascript is a method on the instance variable.)
+by Javascript is a method on `Array.prototype`.)
 
 There's something new going on here. We are passing a function as an argument to
 another function. Not all programming languages can do this and it is a strict
@@ -198,10 +198,10 @@ that allow us to express the pattern of extracting data out of an array. Re-read
 the names that this function has (in the various languages) on the first line of
 this article. Their names should make more sense now.
 
-`Enumerable#each` (Ruby) and `Array.prototype.forEach` are likely written using
-`inject` and `reduce` respectively. They are further abstractions. Same with the
-various `select`, `find`, `map`, etc. methods. They build on the abstraction
-provided by `inject`/`reduce`.
+`Enumerable#each` (Ruby) and `Array.prototype.forEach` (Javascript) are likely
+written using `inject` and `reduce` respectively. They are further
+abstractions. Same with the various `select`, `find`, `map`, etc. methods. They
+build on the abstraction provided by `inject`/`reduce`.
 
 ## Reduce in the wild
 
