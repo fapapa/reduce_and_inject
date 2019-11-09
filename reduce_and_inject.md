@@ -53,6 +53,7 @@ You'll immediately notice that this is a lot shorter. That is **not** a good
 enough reason on its own to use `inject`.
 
 ![I replaced all my loops with reduce](./wierd_flex.jpg)
+
 Weird flex, but OK.
 
 What we want is *more readable* code, not just shorter code. Shorter code is
@@ -134,6 +135,8 @@ create a throw-away variable outside of the loop and remember to increment it at
 the end of the loop.
 
 ```javascript
+// ** Javascript **
+
 // Traditional while loop
 let i = 0
 
@@ -152,7 +155,8 @@ Again, this isn't just shorter and easier to read; it's more maintainable and
 portable, and less error-prone. It's not a subjective style issue; the `for`
 loop is objectively better code for that situation.
 
-You've no doubt noticed that you most often use for loops to iterate over an array:
+You've no doubt noticed that you most often use `for` loops to iterate over an
+array:
 
 ```javascript
 my_array = [/** some items in here **/]
@@ -189,6 +193,30 @@ There's something new going on here. We are passing a function as an argument to
 another function. Not all programming languages can do this and it is a strict
 requirement for the *functional programming* paradigm.
 
+`reduce` and `inject` are a further abstraction on top of more primitive loops
+that allow us to express the pattern of extracting data out of an array. Re-read
+the names that this function has (in the various languages) on the first line of
+this article. Their names should make more sense now.
 
+`Enumerable#each` (Ruby) and `Array.prototype.forEach` are likely written using
+`inject` and `reduce` respectively. They are further abstractions. Same with the
+various `select`, `find`, `map`, etc. methods. They build on the abstraction
+provided by `inject`/`reduce`.
+
+## Reduce in the wild
+
+`reduce` and its cousins have become wildly popular over the past few years with
+the popularity of functional programming. Entire libraries have been written
+around the pattern ([Redux](https://redux.js.org)). And even popular frameorks
+like [React](https://reactjs.org) have been re-worked to take advantage of the
+pattern (`useReducer`).
+
+As developers we need to be careful not to buy in to the latest programming fad
+just because all the cool devs are doing it. The cost of being a good dev is
+eternal vigilance. When we see something gaining in popularity, we need to do
+our homework to figure out what this "new something" aims to solve. Instead of
+just using the new tool blindly, we should understand the *when* and
+*why*. Hopefully this article has helped you understand the *when* and *why* of
+`reduce` and its kin.
 
 [Wikipedia Reduce]: https://en.wikipedia.org/wiki/Fold_(higher-order_function)
