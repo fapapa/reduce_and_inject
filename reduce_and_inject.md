@@ -52,7 +52,7 @@ puts adder(my_numbers).inspect
 You'll immediately notice that this is a lot shorter. That is **not** a good
 enough reason on its own to use `inject`.
 
-![I replaced all my loops with reduce](./weird_flex.jpg)
+![I replaced all my loops with reduce](./wierd_flex.jpg)
 Weird flex, but OK.
 
 What we want is *more readable* code, not just shorter code. Shorter code is
